@@ -19,7 +19,7 @@
 			<div class="col-md-4 col-xs-12">
 				<div class="white-box">
 					<div class="user-bg">
-						<img width="100%" alt="user" :src="contact.image">
+						<img width="100%" alt="user" :src="imageIndexOf()">
 					</div>
 					<div class="user-btm-box">
 						<!-- .row -->
@@ -215,32 +215,21 @@
 
 <script>
 	import Vue from 'vue';
-	import {mapGetters} from 'vuex';
-	import {mapActions} from 'vuex';
+	import {mapGetters, mapActions} from 'vuex';
 
 	export default {
 		data(){
 			return {
-				//contacts: []
+				
 			}
 		},
 		created(){
-			/*Vue.http.get('https://api.myjson.com/bins/681tt')
-						.then(response => response.json())
-						.then(data => {
-							this.contacts = [...data.contacts];
-
-							console.log(this.contacts);
-						})
-						.catch(err => {
-							console.log(err);
-						});*/
-			//this.$store.dispatch('contacts/loadContacts');
+			this.$store.dispatch('contacts/loadContacts');
 		},
 		computed: {
-			/*...mapGetters('contacts', {
-				contacts: 'contact'
-			}),*/
+			...mapGetters('contacts', {
+				contacts: 'contacts'
+			}),
 			id(){
 				return this.$route.params.id;
 			},
@@ -248,6 +237,10 @@
 				return this.$store.getters['contacts/contact'](this.id);
 			},
 		},
-		methods: {}
+		methods: {
+			imageIndexOf(){
+				return this.contact.image.indexOf("base64")+1 ? (''+this.contact.image+'') : ('../'+this.contact.image+'');
+			},
+		}
 	}
 </script>

@@ -3,47 +3,11 @@ import Vue from 'vue';
 export default {
 	namespaced: true,
 	state: {
-		contacts: [
-			{
-				"id": 0,
-				"url": "contact-detail.html",
-				"image": "/images/users/genu.jpg",
-				"name": "Genelia Deshmukh",
-				"email": "genelia@gmail.com",
-				"phone": "+123 456 789",
-				"role": "Designer",
-				"age": "23",
-				"joiningDate": "12-10-2014",
-				"salery": "$1200"
-			},
-			{
-				"id": 1,
-				"url": "contact-detail.html",
-				"image": "/images/users/genu.jpg",
-				"name": "Genelia Deshmukh",
-				"email": "genelia@gmail.com",
-				"phone": "+123 456 789",
-				"role": "Designer",
-				"age": "23",
-				"joiningDate": "12-10-2014",
-				"salery": "$1200"
-			},
-			{
-				"id": 2,
-				"url": "contact-detail.html",
-				"image": "/images/users/arijit.jpg",
-				"name": "Arijit Singh",
-				"email": "arijit@gmail.com",
-				"phone": "+234 456 789",
-				"role": "Developer",
-				"age": "26",
-				"joiningDate": "10-09-2014",
-				"salery": "$1800"
-			},
-		]
+		contacts: []
 	},
 	getters: {
-		contacts(state){
+		contacts: state => {
+			//console.log('asdasd', state.contacts)
 			return state.contacts;
 		},
 		contactsMap(state){
@@ -64,13 +28,12 @@ export default {
 			state.contacts = [];
 		},
 		loadContacts(state, data){
-			state.contacts = data;
+			state.contacts = [...data.contacts];
 		}
 	},
 	actions: {
 		loadContacts(store){
 			store.commit('clearContacts');
-
 			Vue.http.get('681tt')
 					.then(response => response.json())
 					.then(data => {

@@ -182,7 +182,7 @@
 	import Vue from 'vue';
 	const jsonObject = '681tt'
 
-	import {mapGetters} from 'vuex';
+	import {mapGetters, mapActions} from 'vuex';
 
 	export default {
 		data(){
@@ -199,8 +199,8 @@
 				salery: null,
 				image: null,*/
 
-				contacts: [],
-				filteredItems: [],
+				//contacts: [],
+				//filteredItems: [],
 				paginatedItems: [],
 				pagination: {
 					range: 5,
@@ -209,11 +209,11 @@
 					items: [],
 					filteredItems: [],
 				},
-				status: [],
+				//status: [],
 			}
 		},
 		created(){
-			Vue.http.get(''+ jsonObject +'')
+			/*Vue.http.get(''+ jsonObject +'')
 						.then(response => response.json())
 						.then(data => {
 							this.contacts = [...data.contacts];
@@ -229,7 +229,8 @@
 						})
 						.catch(err => {
 							console.log(err);
-						});
+						});*/
+			this.$store.dispatch('contacts/loadContacts');
 		},
 		methods: {
 			onSearch(searchString, currentPage){
@@ -245,6 +246,7 @@
 							item.joiningDate.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
 							item.salery.toLowerCase().indexOf(searchString.toLowerCase()) !== -1){
 
+							console.log(item)
 							return item;
 						}
 					});
@@ -258,6 +260,7 @@
 				for( let i = 0; i < numberOfPage; i++ ){
 					this.pagination.items.push(i+1);
 				}
+				//console.log('this.pagination.items = ', this.pagination.items)
 			},
 			selectPage(item){
 				this.pagination.currentPage = item;
@@ -289,6 +292,7 @@
 				this.paginatedItems = this.filteredItems.filter((v, k) => {
 					return Math.ceil((k+1) / this.pagination.itemPerPage) == this.pagination.currentPage;
 				});
+				//console.log('this.pagination.items = ', this.pagination.items)
 			},
 			addContactItem(){
 				this.contacts.push({
@@ -390,10 +394,51 @@
 				this.changeSave();
 			}
 		},
+		watch: {
+			filteredItems() {
+				this.buildPagination();
+				this.selectPage(1);
+			},
+		},
 		computed: {
+			...mapGetters('contacts', {
+				contacts: 'contacts'
+			}),
 			...mapGetters([
 				'name', 'email', 'phone', 'role', 'age', 'joiningDate', 'salery', 'image',
 			]),
+			status() {
+				return this.contacts.map(item => {
+					return{
+						...item,
+						changePhone: item.phone !== -1,
+						changeSalery: item.salery !== -1
+					}
+				})
+			},
+			/*status: {
+				get(){
+					return this.contacts.map(item => {
+						return{
+							...item,
+							changePhone: item.phone !== -1,
+							changeSalery: item.salery !== -1
+						}
+					})
+				},
+				set(value){
+					this.contacts = value;
+				}
+			},*/
+			filteredItems: {
+				get(){
+					return [...this.status];
+				},
+				set(value){
+					console.log(value)
+					this.$store.commit('contacts/loadContacts', {contacts: value});
+				}
+			},
 			name: {
 				get(){
 					return this.$store.getters.name;
@@ -458,14 +503,6 @@
 					this.$store.commit('setImage', value);
 				}
 			},
-			/*contacts: {
-				get(){
-					return this.$store.getters.contacts;
-				},
-				set(value){
-					this.$store.commit('setContacts', value);
-				}
-			},*/
 		},
 
 	}

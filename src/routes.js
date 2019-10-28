@@ -18,15 +18,16 @@ const routes = [
 		name: 'contact',
 		path: '/contact',
 		component: Contact,
+		beforeEnter: (from, to, next) => {
+			store.dispatch('contacts/loadContacts').then(data => {
+				console.log('contact:id', data);
+			});
+			next();
+		}
 	},
 	{
-		//name: 'contact-detail',
 		path: '/contact/:id',
 		component: ContactDetail,
-		/*beforeEnter(from, to, next){
-			store.dispatch('contacts/loadContacts');
-			next();
-		}*/
 	},
 	{
 		name: 'e404',
