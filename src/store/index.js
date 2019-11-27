@@ -59,8 +59,8 @@ export const store = new Vuex.Store({
 		},*/
 		/*filteredItems(state){
 			return state.filteredItems;
-		},
-		paginatedItems(state){
+		},*/
+		/*paginatedItems(state){
 			return state.paginatedItems;
 		},
 
@@ -94,6 +94,9 @@ export const store = new Vuex.Store({
 		setImage(state, value){
 			state.image = value;
 		},
+		/*filteredItems(state, value){
+			state.filteredItems = value;
+		},*/
 		/*setContacts(state, value){
 			state.image = value;
 		},*/

@@ -180,7 +180,7 @@
 
 <script>
 	import Vue from 'vue';
-	const jsonObject = '681tt'
+	const jsonObject = 'https://api.myjson.com/bins/wb7n6'
 
 	import {mapGetters, mapActions} from 'vuex';
 
@@ -236,6 +236,7 @@
 			onSearch(searchString, currentPage){
 				if(!searchString){
 					this.filteredItems = this.contacts.filter(item => item);
+					//this.$store.dispatch('contacts/loadContacts');
 				} else {
 					this.filteredItems = this.contacts.filter(function(item){
 						if( item.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
@@ -246,10 +247,11 @@
 							item.joiningDate.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
 							item.salery.toLowerCase().indexOf(searchString.toLowerCase()) !== -1){
 
-							console.log(item)
 							return item;
 						}
 					});
+					console.log(this.contacts.length);
+					console.log(this.filteredItems.length);
 				}
 				this.buildPagination();
 				this.selectPage(1);
@@ -294,8 +296,9 @@
 				});
 				//console.log('this.pagination.items = ', this.pagination.items)
 			},
+
 			addContactItem(){
-				this.contacts.push({
+				this.$store.commit('contacts/addContact', {
 					'id': this.contacts.length,
 					'name': this.name,
 					'email': this.email,
@@ -306,21 +309,34 @@
 					'salery': this.salery,
 					'image': this.image
 				});
-				this.status.push({
+				//this.contacts.push(item => item);
+				/*this.contacts.push({
+					'id': this.contacts.length,
+					'name': this.name,
+					'email': this.email,
+					'phone': this.phone,
+					'role': this.role,
+					'age': this.age,
+					'joiningDate': this.joiningDate,
+					'salery': this.salery,
+					'image': this.image
+				});*/
+				/*this.status.push({
 					changePhone: this.phone !== -1,
 					changeSalery: this.salery !== -1
-				});
+				});*/
 				this.showModal = false;
-				this.filteredItems = this.contacts;
+				/*this.filteredItems = this.contacts;
+				this.$store.commit('contacts/changeContacts');*/
+				//this.$store.dispatch('contacts/changeContacts');
+				this.changeSave();
 				this.buildPagination();
 				this.selectPage(this.pagination.items.length);
-				this.changeSave();
-
-				console.log(this.filteredItems.length > this.pagination.itemPerPage);
-				console.log(this.pagination.items.length);
-				console.log(this.pagination.itemPerPage);
-				console.log(this.pagination.range);
+				console.log('add', this.pagination.items.length)
 			},
+
+
+
 			onFileChange(e){
 				let files = e.target.files || e.dataTransfer.files;
 				if (!files.length)
@@ -373,10 +389,9 @@
 				});
 			},
 			deleteContact(contact){
-				this.contacts.splice(this.contacts.indexOf(contact), 1);
-				this.filteredItems = this.contacts;
-				console.log(this.filteredItems);
-				console.log(this.contacts);
+				this.$store.commit('contacts/deleteContact');
+				//this.contacts.splice(this.contacts.indexOf(contact), 1);
+				//this.filteredItems = this.contacts;
 				this.buildPagination();
 				if( this.paginatedItems.length-1 < 1 ){
 					this.selectPage(this.pagination.currentPage-1);
@@ -387,17 +402,19 @@
 			},
 			toggleTooltipPhone(index){
 				this.status[index].changePhone = !this.status[index].changePhone;
-				this.changeSave();
+				//this.changeSave();
 			},
 			toggleTooltipSalery(index){
 				this.status[index].changeSalery = !this.status[index].changeSalery;
-				this.changeSave();
+				//this.changeSave();
 			}
 		},
 		watch: {
 			filteredItems() {
 				this.buildPagination();
 				this.selectPage(1);
+				//this.selectPage(this.pagination.items.length);
+				console.log('filteredItems', 1);
 			},
 		},
 		computed: {
@@ -407,6 +424,7 @@
 			...mapGetters([
 				'name', 'email', 'phone', 'role', 'age', 'joiningDate', 'salery', 'image',
 			]),
+
 			status() {
 				return this.contacts.map(item => {
 					return{
@@ -416,26 +434,20 @@
 					}
 				})
 			},
-			/*status: {
+			changeSaves: {
 				get(){
-					return this.contacts.map(item => {
-						return{
-							...item,
-							changePhone: item.phone !== -1,
-							changeSalery: item.salery !== -1
-						}
-					})
+					console.log('changeContacts');
+					return this.$store.getters.contacts;
 				},
 				set(value){
-					this.contacts = value;
+					this.$store.commit('contacts/changeContacts', {contacts: value});
 				}
-			},*/
+			},
 			filteredItems: {
 				get(){
 					return [...this.status];
 				},
 				set(value){
-					console.log(value)
 					this.$store.commit('contacts/loadContacts', {contacts: value});
 				}
 			},

@@ -7,7 +7,7 @@ export default {
 	},
 	getters: {
 		contacts: state => {
-			//console.log('asdasd', state.contacts)
+			console.log('asdasd', state.contacts)
 			return state.contacts;
 		},
 		contactsMap(state){
@@ -29,15 +29,36 @@ export default {
 		},
 		loadContacts(state, data){
 			state.contacts = [...data.contacts];
-		}
+		},
+		addContact(state, contacts){
+			state.contacts.push(contacts);
+		},
+		deleteContact(state, contact){
+			state.contacts.splice(state.contacts.indexOf(contact), 1);
+		},
+		changeContacts(state, data){
+			console.log('changeContacts', state.contacts);
+			state.contacts = [...data.contacts];
+		},
 	},
 	actions: {
 		loadContacts(store){
 			store.commit('clearContacts');
-			Vue.http.get('681tt')
+			Vue.http.get('https://api.myjson.com/bins/wb7n6')
 					.then(response => response.json())
 					.then(data => {
 						store.commit('loadContacts', data);
+					})
+					.catch(err => {
+						console.log(err);
+					});
+		},
+		changeContacts(store, state){
+			Vue.http.put('https://api.myjson.com/bins/wb7n6')
+					.then(response => response.json())
+					.then(data => {
+						console.log('change', data);
+						store.commit('changeContacts', data);
 					})
 					.catch(err => {
 						console.log(err);
