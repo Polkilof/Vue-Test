@@ -173,6 +173,10 @@
 						</div>
 					</keep-alive>
 				</div>
+				<div style="display: flex;">
+					<div>filteredItems : {{filteredItems}}</div>
+					<div>contacts: {{contacts}}</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -180,7 +184,7 @@
 
 <script>
 	import Vue from 'vue';
-	const jsonObject = 'https://api.myjson.com/bins/wb7n6'
+	const jsonObject = 'https://api.myjson.com/bins/ci0hm'
 
 	import {mapGetters, mapActions} from 'vuex';
 
@@ -213,30 +217,12 @@
 			}
 		},
 		created(){
-			/*Vue.http.get(''+ jsonObject +'')
-						.then(response => response.json())
-						.then(data => {
-							this.contacts = [...data.contacts];
-							for(let i = 0; i < this.contacts.length; i++){
-								this.status.push({
-									changePhone: this.contacts[i].phone !== -1,
-									changeSalery: this.contacts[i].salery !== -1
-								});
-							}
-							this.filteredItems = this.contacts;
-							this.buildPagination();
-							this.selectPage(1);
-						})
-						.catch(err => {
-							console.log(err);
-						});*/
 			this.$store.dispatch('contacts/loadContacts');
 		},
 		methods: {
 			onSearch(searchString, currentPage){
 				if(!searchString){
 					this.filteredItems = this.contacts.filter(item => item);
-					//this.$store.dispatch('contacts/loadContacts');
 				} else {
 					this.filteredItems = this.contacts.filter(function(item){
 						if( item.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
@@ -250,11 +236,7 @@
 							return item;
 						}
 					});
-					console.log(this.contacts.length);
-					console.log(this.filteredItems.length);
 				}
-				this.buildPagination();
-				this.selectPage(1);
 			},
 			buildPagination(){
 				let numberOfPage = Math.ceil(this.filteredItems.length/this.pagination.itemPerPage);
@@ -335,8 +317,6 @@
 				console.log('add', this.pagination.items.length)
 			},
 
-
-
 			onFileChange(e){
 				let files = e.target.files || e.dataTransfer.files;
 				if (!files.length)
@@ -402,22 +382,27 @@
 			},
 			toggleTooltipPhone(index){
 				this.status[index].changePhone = !this.status[index].changePhone;
-				//this.changeSave();
+				this.changeSave();
 			},
 			toggleTooltipSalery(index){
 				this.status[index].changeSalery = !this.status[index].changeSalery;
-				//this.changeSave();
-			}
+				this.changeSave();
+			},
+
 		},
 		watch: {
-			filteredItems() {
+			filteredItems: function (val, old) {
+				console.log('filteredItems', this.filteredItems);
+				console.log('contacts', this.contacts);
 				this.buildPagination();
-				this.selectPage(1);
-				//this.selectPage(this.pagination.items.length);
-				console.log('filteredItems', 1);
+				this.selectPage(this.pagination.currentPage);
 			},
+			deep: false
 		},
 		computed: {
+			...mapGetters('filteredItems', {
+				filteredItems: 'filteredItems'
+			}),
 			...mapGetters('contacts', {
 				contacts: 'contacts'
 			}),
@@ -426,18 +411,17 @@
 			]),
 
 			status() {
-				return this.contacts.map(item => {
+				return this.filteredItems = this.contacts.map(item => {
 					return{
 						...item,
 						changePhone: item.phone !== -1,
-						changeSalery: item.salery !== -1
+						changeSalery: item.salery !== -1,
 					}
 				})
 			},
 			changeSaves: {
 				get(){
-					console.log('changeContacts');
-					return this.$store.getters.contacts;
+					return this.contacts;
 				},
 				set(value){
 					this.$store.commit('contacts/changeContacts', {contacts: value});

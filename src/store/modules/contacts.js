@@ -3,11 +3,14 @@ import Vue from 'vue';
 export default {
 	namespaced: true,
 	state: {
-		contacts: []
+		contacts: [],
+		filteredItems: [],
 	},
 	getters: {
+		filteredItems: state => {
+			return state.filteredItems;
+		},
 		contacts: state => {
-			console.log('asdasd', state.contacts)
 			return state.contacts;
 		},
 		contactsMap(state){
@@ -44,7 +47,7 @@ export default {
 	actions: {
 		loadContacts(store){
 			store.commit('clearContacts');
-			Vue.http.get('https://api.myjson.com/bins/wb7n6')
+			Vue.http.get('https://api.myjson.com/bins/ci0hm')
 					.then(response => response.json())
 					.then(data => {
 						store.commit('loadContacts', data);
@@ -54,7 +57,7 @@ export default {
 					});
 		},
 		changeContacts(store, state){
-			Vue.http.put('https://api.myjson.com/bins/wb7n6')
+			Vue.http.put('https://api.myjson.com/bins/ci0hm')
 					.then(response => response.json())
 					.then(data => {
 						console.log('change', data);
@@ -63,7 +66,7 @@ export default {
 					.catch(err => {
 						console.log(err);
 					});
-		}
+		},
 	},
 };
 
