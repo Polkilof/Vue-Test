@@ -12,7 +12,7 @@ export const store = new Vuex.Store({
 	state: {
 		cnt: 1,
 		
-		name: null,
+		name: '',
 		email: null,
 		phone: null,
 		role: '',
@@ -21,10 +21,10 @@ export const store = new Vuex.Store({
 		salery: null,
 		image: null,
 
-		//contacts: [],
-		/*filteredItems: [],
-		paginatedItems: [],
-		status: [],*/
+		address: '',
+		location: '',
+		mess: '',
+		tags: [],
 	},
 	getters: {
 		cnt(state){
@@ -54,20 +54,18 @@ export const store = new Vuex.Store({
 		image(state){
 			return state.image;
 		},
-		/*contacts(state){
-			return state.contacts;
-		},*/
-		/*filteredItems(state){
-			return state.filteredItems;
-		},*/
-		/*paginatedItems(state){
-			return state.paginatedItems;
+		address(state){
+			return state.address;
 		},
-
-		status(state){
-			return state.status;
-		},*/
-
+		location(state){
+			return state.location;
+		},
+		mess(state){
+			return state.mess;
+		},
+		tags(state){
+			return state.tags;
+		},
 	},
 	mutations: {
 		setName(state, value){
@@ -94,12 +92,18 @@ export const store = new Vuex.Store({
 		setImage(state, value){
 			state.image = value;
 		},
-		/*filteredItems(state, value){
-			state.filteredItems = value;
-		},*/
-		/*setContacts(state, value){
-			state.image = value;
-		},*/
+		setAddress(state, value){
+			state.address = value;
+		},
+		setLocation(state, value){
+			state.location = value;
+		},
+		setMess(state, value){
+			state.mess = value;
+		},
+		setTags(state, value){
+			state.tags = value;
+		},
 	},
 	actions: {},
 

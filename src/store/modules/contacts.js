@@ -4,7 +4,7 @@ export default {
 	namespaced: true,
 	state: {
 		contacts: [],
-		filteredItems: [],
+		filteredItems: {},
 	},
 	getters: {
 		filteredItems: state => {
@@ -33,7 +33,12 @@ export default {
 		loadContacts(state, data){
 			state.contacts = [...data.contacts];
 		},
+		filteredContacts(state, data){
+			state.filteredItems = [...data.filteredItems];
+			console.log('filteredContacts', state.filteredItems);
+		},
 		addContact(state, contacts){
+			console.log('addContacts', state.contacts);
 			state.contacts.push(contacts);
 		},
 		deleteContact(state, contact){
@@ -41,13 +46,14 @@ export default {
 		},
 		changeContacts(state, data){
 			console.log('changeContacts', state.contacts);
-			state.contacts = [...data.contacts];
+			state.contacts.push(contacts);
 		},
+		updateContactItem(state){},
 	},
 	actions: {
 		loadContacts(store){
 			store.commit('clearContacts');
-			Vue.http.get('https://api.myjson.com/bins/ci0hm')
+			Vue.http.get('https://api.myjson.com/bins/twsm8')
 					.then(response => response.json())
 					.then(data => {
 						store.commit('loadContacts', data);
@@ -56,11 +62,20 @@ export default {
 						console.log(err);
 					});
 		},
-		changeContacts(store, state){
-			Vue.http.put('https://api.myjson.com/bins/ci0hm')
+		filteredContacts(store){
+			Vue.http.get('https://api.myjson.com/bins/twsm8')
 					.then(response => response.json())
 					.then(data => {
-						console.log('change', data);
+						store.commit('filteredContacts', data);
+					})
+					.catch(err => {
+						console.log(err);
+					});
+		},
+		changeContacts(store, state){
+			Vue.http.put('https://api.myjson.com/bins/twsm8')
+					.then(response => response.json())
+					.then(data => {
 						store.commit('changeContacts', data);
 					})
 					.catch(err => {

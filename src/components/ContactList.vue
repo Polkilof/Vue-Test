@@ -174,8 +174,9 @@
 					</keep-alive>
 				</div>
 				<div style="display: flex;">
-					<div>filteredItems : {{filteredItems}}</div>
-					<div>contacts: {{contacts}}</div>
+					<div style="flex: 0 0 33%;">filteredItems : {{filteredItems}}</div>
+					<div style="flex: 0 0 33%;">contacts: {{contacts}}</div>
+					<div style="flex: 0 0 33%;">filteredItemss: {{filteredItemss}}</div>
 				</div>
 			</div>
 		</div>
@@ -184,7 +185,7 @@
 
 <script>
 	import Vue from 'vue';
-	const jsonObject = 'https://api.myjson.com/bins/ci0hm'
+	const jsonObject = 'https://api.myjson.com/bins/twsm8'
 
 	import {mapGetters, mapActions} from 'vuex';
 
@@ -204,7 +205,7 @@
 				image: null,*/
 
 				//contacts: [],
-				//filteredItems: [],
+				filteredItemss: [],
 				paginatedItems: [],
 				pagination: {
 					range: 5,
@@ -221,8 +222,9 @@
 		},
 		methods: {
 			onSearch(searchString, currentPage){
+				this.filteredItemss = this.contacts;
 				if(!searchString){
-					this.filteredItems = this.contacts.filter(item => item);
+					this.filteredItems = this.filteredItemss.filter(item => item);
 				} else {
 					this.filteredItems = this.contacts.filter(function(item){
 						if( item.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
@@ -289,7 +291,11 @@
 					'age': this.age,
 					'joiningDate': this.joiningDate,
 					'salery': this.salery,
-					'image': this.image
+					'image': this.image,
+					'address': this.address,
+					'mess': this.mess,
+					'location': this.location,
+					'tags': this.tags,
 				});
 				//this.contacts.push(item => item);
 				/*this.contacts.push({
@@ -312,9 +318,9 @@
 				this.$store.commit('contacts/changeContacts');*/
 				//this.$store.dispatch('contacts/changeContacts');
 				this.changeSave();
+				this.filteredItems = this.contacts;
 				this.buildPagination();
 				this.selectPage(this.pagination.items.length);
-				console.log('add', this.pagination.items.length)
 			},
 
 			onFileChange(e){
@@ -392,12 +398,12 @@
 		},
 		watch: {
 			filteredItems: function (val, old) {
-				console.log('filteredItems', this.filteredItems);
-				console.log('contacts', this.contacts);
+				/*console.log('filteredItems', this.filteredItems);
+				console.log('contacts', this.contacts);*/
 				this.buildPagination();
 				this.selectPage(this.pagination.currentPage);
 			},
-			deep: false
+			deep: true
 		},
 		computed: {
 			...mapGetters('filteredItems', {
@@ -407,7 +413,7 @@
 				contacts: 'contacts'
 			}),
 			...mapGetters([
-				'name', 'email', 'phone', 'role', 'age', 'joiningDate', 'salery', 'image',
+				'name', 'email', 'phone', 'role', 'age', 'joiningDate', 'salery', 'image', 'address', 'location', 'mess', 'tags'
 			]),
 
 			status() {
@@ -421,7 +427,7 @@
 			},
 			changeSaves: {
 				get(){
-					return this.contacts;
+					return [...this.status];
 				},
 				set(value){
 					this.$store.commit('contacts/changeContacts', {contacts: value});
@@ -497,6 +503,38 @@
 				},
 				set(value){
 					this.$store.commit('setImage', value);
+				}
+			},
+			address: {
+				get(){
+					return this.$store.getters.address;
+				},
+				set(value){
+					this.$store.commit('setAddress', value);
+				}
+			},
+			location: {
+				get(){
+					return this.$store.getters.location;
+				},
+				set(value){
+					this.$store.commit('setLocation', value);
+				}
+			},
+			mess: {
+				get(){
+					return this.$store.getters.mess;
+				},
+				set(value){
+					this.$store.commit('setMess', value);
+				}
+			},
+			tags: {
+				get(){
+					return this.$store.getters.tags;
+				},
+				set(value){
+					this.$store.commit('setTags', value);
 				}
 			},
 		},

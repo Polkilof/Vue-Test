@@ -11,7 +11,7 @@
 
 <script>
 	import Vue from 'vue';
-	const jsonObject = 'https://api.myjson.com/bins/681tt'
+	const jsonObject = 'https://api.myjson.com/bins/twsm8'
 	
 	import {mapGetters} from 'vuex';
 

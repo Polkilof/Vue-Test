@@ -47,8 +47,7 @@
 						<!-- .row -->
 						<div class="row text-center m-t-10">
 							<div class="col-md-12"><strong>Address</strong>
-								<p>E104, Dharti-2, Chandlodia Ahmedabad
-									<br/> Gujarat, India.</p>
+								<p>{{ contact.address }}, {{ contact.location }}.</p>
 							</div>
 						</div>
 					</div>
@@ -56,156 +55,131 @@
 			</div>
 			<div class="col-md-8 col-xs-12">
 				<div class="white-box">
-					<!-- .tabs -->
 					<ul class="nav nav-tabs tabs customtab">
-						<!-- <li class="active tab">
-							<a href="#home" data-toggle="tab"> <span class="visible-xs"><i class="fa fa-home"></i></span> <span class="hidden-xs">Activity</span> </a>
-						</li> -->
-						<li class="active tab">
-							<a href="#profile" data-toggle="tab"> <span class="visible-xs"><i class="fa fa-user"></i></span> <span class="hidden-xs">Profile</span> </a>
+						<li class="tab" v-bind:class="[ activetab === '1' ? 'active' : '' ]">
+							<a href="#profile" v-on:click.prevent="activetab='1'"> <span class="visible-xs"><i class="fa fa-user"></i></span> <span class="hidden-xs">Profile</span> </a>
 						</li>
-						<li class="tab">
-							<a href="#settings" data-toggle="tab" aria-expanded="false"> <span class="visible-xs"><i class="fa fa-cog"></i></span> <span class="hidden-xs">Edit Detail</span> </a>
+						<li class="tab" v-bind:class="[ activetab === '2' ? 'active' : '' ]">
+							<a href="#settings" v-on:click.prevent="activetab='2'"> <span class="visible-xs"><i class="fa fa-cog"></i></span> <span class="hidden-xs">Edit Detail</span> </a>
 						</li>
 					</ul>
-					<!-- /.tabs -->
 					<div class="tab-content">
-						<!-- .tabs 1 -->
-						<!-- <div class="tab-pane active" id="home">
-							<div class="steamline">
-								<div class="sl-item">
-									<div class="sl-left"> <img src="images/users/genu.jpg" alt="user" class="img-circle" /> </div>
-									<div class="sl-right">
-										<div class="m-l-40"><a href="#" class="text-info">John Doe</a> <span class="sl-date">5 minutes ago</span>
-											<p>assign a new task <a href="#"> Design weblayout</a></p>
-											<div class="m-t-20 row"><img src="images/img1.jpg" alt="user" class="col-md-3 col-xs-12" /> <img src="images/img2.jpg" alt="user" class="col-md-3 col-xs-12" /> <img src="images/img3.jpg" alt="user" class="col-md-3 col-xs-12" /></div>
-										</div>
-									</div>
-								</div>
-								<div class="sl-item">
-									<div class="sl-left"> <img src="images/users/sonu.jpg" alt="user" class="img-circle" /> </div>
-									<div class="sl-right">
-										<div class="m-l-40"> <a href="#" class="text-info">John Doe</a> <span class="sl-date">5 minutes ago</span>
-											<div class="m-t-20 row">
-												<div class="col-md-2 col-xs-12"><img src="images/img1.jpg" alt="user" class="img-responsive" /></div>
-												<div class="col-md-9 col-xs-12">
-													<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa</p> <a href="#" class="btn btn-success"> Design weblayout</a></div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="sl-item">
-									<div class="sl-left"> <img src="images/users/ritesh.jpg" alt="user" class="img-circle" /> </div>
-									<div class="sl-right">
-										<div class="m-l-40"><a href="#" class="text-info">John Doe</a> <span class="sl-date">5 minutes ago</span>
-											<p class="m-t-10"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper </p>
-										</div>
-									</div>
-								</div>
-								<div class="sl-item">
-									<div class="sl-left"> <img src="images/users/govinda.jpg" alt="user" class="img-circle" /> </div>
-									<div class="sl-right">
-										<div class="m-l-40"><a href="#" class="text-info">John Doe</a> <span class="sl-date">5 minutes ago</span>
-											<p>assign a new task <a href="#"> Design weblayout</a></p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div> -->
-						<!-- /.tabs1 -->
-						<!-- .tabs2 -->
-						<div class="tab-pane active" id="profile">
+						<div v-if="activetab ==='1'" class="tab-panee" id="profile">
 							<div class="row">
-								<div class="col-md-3 col-xs-6 b-r"> <strong>Full Name</strong>
+								<div class="col-md-3 col-xs-6 b-r">
+									<strong>Full Name</strong>
 									<br>
-									<p class="text-muted">Johnathan Deo</p>
+									<p class="text-muted">{{ contact.name }}</p>
 								</div>
-								<div class="col-md-3 col-xs-6 b-r"> <strong>Mobile</strong>
+								<div class="col-md-3 col-xs-6 b-r">
+									<strong>Mobile</strong>
 									<br>
-									<p class="text-muted">(123) 456 7890</p>
+									<p class="text-muted">{{ contact.phone }}</p>
 								</div>
-								<div class="col-md-3 col-xs-6 b-r"> <strong>Email</strong>
+								<div class="col-md-3 col-xs-6 b-r">
+									<strong>Email</strong>
 									<br>
-									<p class="text-muted">johnathan@admin.com</p>
+									<p class="text-muted">{{ contact.email }}</p>
 								</div>
-								<div class="col-md-3 col-xs-6"> <strong>Location</strong>
+								<div class="col-md-3 col-xs-6">
+									<strong>Location</strong>
 									<br>
-									<p class="text-muted">London</p>
+									<p class="text-muted">{{ contact.location }}</p>
 								</div>
 							</div>
 							<hr>
-							<p class="m-t-30">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
-							<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries </p>
-							<p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+							<p class="m-t-30">{{ contact.mess }}</p>
 							<h4 class="font-bold m-t-30">Skill Set</h4>
 							<hr>
-							<h5>Wordpress <span class="pull-right">80%</span></h5>
-							<div class="progress">
-								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%;"> <span class="sr-only">50% Complete</span> </div>
-							</div>
-							<h5>HTML 5 <span class="pull-right">90%</span></h5>
-							<div class="progress">
-								<div class="progress-bar progress-bar-custom" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%;"> <span class="sr-only">50% Complete</span> </div>
-							</div>
-							<h5>jQuery <span class="pull-right">50%</span></h5>
-							<div class="progress">
-								<div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%;"> <span class="sr-only">50% Complete</span> </div>
-							</div>
-							<h5>Photoshop <span class="pull-right">70%</span></h5>
-							<div class="progress">
-								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%;"> <span class="sr-only">50% Complete</span> </div>
+							<div v-for="(tags, index) in contact.tags.length">
+								<h5>{{contact.tags[index]}}</h5>
+								<div class="progress">
+									<div class="progress-bar" :class="progressColor(index)" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%;"> <span class="sr-only">100% Complete</span> </div>
+								</div>
 							</div>
 						</div>
-						<!-- /.tabs2 -->
-						<!-- .tabs3 -->
-						<div class="tab-pane" id="settings">
+						<div v-if="activetab ==='2'" class="tab-panee" id="settings">
 							<form class="form-horizontal form-material">
 								<div class="form-group">
 									<label class="col-md-12">Full Name</label>
 									<div class="col-md-12">
-										<input type="text" placeholder="Johnathan Doe" class="form-control form-control-line"> </div>
+										<input v-model="contact.name"
+												type="text" placeholder="Johnathan Doe" class="form-control form-control-line">
+									</div>
 								</div>
 								<div class="form-group">
 									<label for="example-email" class="col-md-12">Email</label>
 									<div class="col-md-12">
-										<input type="email" placeholder="johnathan@admin.com" class="form-control form-control-line" name="example-email" id="example-email"> </div>
+										<input v-model="contact.email"
+												type="email" placeholder="johnathan@admin.com" class="form-control form-control-line" name="example-email" id="example-email">
+									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-12">Password</label>
+									<label class="col-md-12">Phone</label>
 									<div class="col-md-12">
-										<input type="password" value="password" class="form-control form-control-line"> </div>
+										<input v-model="contact.phone"
+												type="text" placeholder="123 456 7890" class="form-control form-control-line">
+									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-12">Phone No</label>
+									<label class="col-md-12">Address</label>
 									<div class="col-md-12">
-										<input type="text" placeholder="123 456 7890" class="form-control form-control-line"> </div>
+										<input v-model="contact.address"
+												type="text" placeholder="E104, Dharti-2, Chandlodia Ahmedabad Gujarat" class="form-control form-control-line">
+									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-md-12">Message</label>
 									<div class="col-md-12">
-										<textarea rows="5" class="form-control form-control-line"></textarea>
+										<textarea v-model="contact.mess" placeholder="Your Message" class="form-control form-control-line"></textarea>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-12">Select Country</label>
 									<div class="col-sm-12">
-										<select class="form-control form-control-line selectpicker"  data-style="form-control">
-											<option>London</option>
+										<select v-model="contact.location" 
+												class="form-control form-control-line selectpicker" data-style="form-control">
+											<option>England</option>
 											<option>India</option>
 											<option>Usa</option>
 											<option>Canada</option>
 											<option>Thailand</option>
+											<option>Ukraine</option>
+											<option>Russia</option>
 										</select>
 									</div>
 								</div>
 								<div class="form-group">
+									<label class="col-sm-12">Skill Set</label>
 									<div class="col-sm-12">
-										<button class="btn btn-success">Update Profile</button>
+										<input-tags v-model="contact.tags">
+											<div class="tags-input"
+												 slot-scope="{tag,removeTag,inputEventHandlers,inputBindings }">
+												<span v-for="tag in contact.tags"
+													  class="tags-input-tag">
+													<span>{{ tag }}</span>
+													<button type="button" class="tags-input-remove"
+														v-on:click="removeTag(tag)"
+													>&times;</button>
+												</span>
+												<input class="tags-input-text form-control" placeholder="Add tag..." type="text"
+														v-on:keydown.enter="$event.stopPropagation()"
+														v-on="inputEventHandlers"
+														v-bind="inputBindings">
+											</div>
+										</input-tags>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-12">
+										<button @click.prevent="updateContactItem"
+												class="btn btn-success">
+											Update Profile
+										</button>
 									</div>
 								</div>
 							</form>
 						</div>
-						<!-- /.tabs3 -->
 					</div>
 				</div>
 			</div>
@@ -215,16 +189,60 @@
 
 <script>
 	import Vue from 'vue';
+	const jsonObject = 'https://api.myjson.com/bins/twsm8'
+	import { VueTags } from 'vue-tags-component';
 	import {mapGetters, mapActions} from 'vuex';
 
 	export default {
 		data(){
 			return {
-				
+				activetab: '1',
+				progressbar: [
+					'progress-bar-primary',
+					'progress-bar-success',
+					'progress-bar-custom',
+					'progress-bar-danger',
+					'progress-bar-info',
+					'progress-bar-inverse'
+				],
+				progressbarColor: null,
 			}
 		},
 		created(){
 			this.$store.dispatch('contacts/loadContacts');
+		},
+		methods: {
+			imageIndexOf(){
+				return this.contact.image.indexOf("base64")+1 ? (''+this.contact.image+'') : ('../'+this.contact.image+'');
+			},
+			updateContactItem(){
+				Vue.set(this.contacts, {
+				/*this.$store.commit('contacts/changeContacts', {*/
+					'name': this.name,
+					'email': this.email,
+					'phone': this.phone,
+					'address': this.address,
+					'mess': this.mess,
+					'location': this.location,
+					'tags': this.tags,
+				});
+
+				this.changeSave();
+			},
+			changeSave(){
+				Vue.http.put(''+ jsonObject +'', {
+					contacts: this.contacts,
+				}).then(function(data){
+					console.log(data);
+				})
+				.catch(err => {
+					console.log(err);
+				});
+			},
+			progressColor(index){
+				index = Math.floor(Math.random() * this.progressbar.length);
+				return this.progressbarColor = this.progressbar[index];
+			},
 		},
 		computed: {
 			...mapGetters('contacts', {
@@ -236,11 +254,92 @@
 			contact(){
 				return this.$store.getters['contacts/contact'](this.id);
 			},
-		},
-		methods: {
-			imageIndexOf(){
-				return this.contact.image.indexOf("base64")+1 ? (''+this.contact.image+'') : ('../'+this.contact.image+'');
+
+			...mapGetters([
+				'name', 'email', 'phone', 'address', 'location', 'mess', 'tags'
+			]),
+			name: {
+				get(){
+					return this.$store.getters.name;
+				},
+				set(value){
+					this.$store.commit('setName', value);
+				}
 			},
-		}
+			email: {
+				get(){
+					return this.$store.getters.email;
+				},
+				set(value){
+					this.$store.commit('setEmail', value);
+				}
+			},
+			phone: {
+				get(){
+					return this.$store.getters.phone;
+				},
+				set(value){
+					this.$store.commit('setPhone', value);
+				}
+			},
+			address: {
+				get(){
+					return this.$store.getters.address;
+				},
+				set(value){
+					this.$store.commit('setAddress', value);
+				}
+			},
+			location: {
+				get(){
+					return this.$store.getters.location;
+				},
+				set(value){
+					this.$store.commit('setLocation', value);
+				}
+			},
+			mess: {
+				get(){
+					return this.$store.getters.mess;
+				},
+				set(value){
+					this.$store.commit('setMess', value);
+				}
+			},
+			tags: {
+				get(){
+					return this.$store.getters.tags;
+				},
+				set(value){
+					this.$store.commit('setTags', value);
+				}
+			},
+		},
 	}
 </script>
+<style scoped>
+	.tags-input{
+		color: white;
+	}
+	.tags-input-tag{
+		display: -webkit-inline-flex;
+		display: -moz-inline-flex;
+		display: -ms-inline-flex;
+		display: -o-inline-flex;
+		display: inline-flex;
+		-ms-align-items: center;
+		align-items: center;
+		background: #2cabe3;
+		border-radius: 3px;
+		padding: 4px 2px 2px 8px;
+		margin-right: 10px;
+		margin-bottom: 10px;
+	}
+	.tags-input-remove{
+		border: 0;
+		border-radius: 0;
+		background: none;
+		outline: none;
+	}
+	.tags-input-text{}
+</style>
