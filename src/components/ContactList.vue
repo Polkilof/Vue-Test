@@ -7,7 +7,7 @@
 						<div class="pull-right">
 							<input v-model="searchString" v-on:keyup="onSearch(searchString)"
 									type="text" id="demo-input-search2" placeholder="search contacts" class="form-control">
-							<span class="help is-dark"><strong>{{filteredItems.length}}</strong> of {{contacts.length}} person found</span>
+							<span class="help is-dark"><strong>{{paginatedItemsFilter.length}}</strong> of {{contacts.length}} person found</span>
 						</div>
 						<h3>Contact / Employee List </h3>
 					</div>
@@ -173,11 +173,6 @@
 						</div>
 					</keep-alive>
 				</div>
-				<div style="display: flex;">
-					<div style="flex: 0 0 33%;">filteredItems : {{filteredItems}}</div>
-					<div style="flex: 0 0 33%;">contacts: {{contacts}}</div>
-					<div style="flex: 0 0 33%;">filteredItemss: {{filteredItemss}}</div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -192,20 +187,10 @@
 	export default {
 		data(){
 			return {
-				searchString: null,
+				searchString: '',
 				showTooltip: false,
 				showModal: false,
-				/*name: null,
-				email: null,
-				phone: null,
-				role: '',
-				age: null,
-				joiningDate: null,
-				salery: null,
-				image: null,*/
 
-				//contacts: [],
-				filteredItemss: [],
 				paginatedItems: [],
 				pagination: {
 					range: 5,
@@ -214,39 +199,34 @@
 					items: [],
 					filteredItems: [],
 				},
-				//status: [],
 			}
 		},
 		created(){
-			this.$store.dispatch('contacts/loadContacts');
+			/*this.$store.dispatch('contacts/loadContacts');*/
+			this.filteredItems = this.contacts.map(item => {
+				return{
+					...item,
+					changePhone: item.phone !== -1,
+					changeSalery: item.salery !== -1,
+				}
+			})
 		},
 		methods: {
-			onSearch(searchString, currentPage){
-				this.filteredItemss = this.contacts;
-				if(!searchString){
-					this.filteredItems = this.filteredItemss.filter(item => item);
+			onSearch(){
+				this.buildPagination();
+				if( this.paginatedItems.length-1 < 1 ){
+					this.selectPage(this.pagination.items.length);
 				} else {
-					this.filteredItems = this.contacts.filter(function(item){
-						if( item.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
-							item.email.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
-							item.phone.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
-							item.age.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
-							item.role.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
-							item.joiningDate.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || 
-							item.salery.toLowerCase().indexOf(searchString.toLowerCase()) !== -1){
-
-							return item;
-						}
-					});
+					this.selectPage(this.pagination.currentPage);
 				}
+				
 			},
 			buildPagination(){
-				let numberOfPage = Math.ceil(this.filteredItems.length/this.pagination.itemPerPage);
+				let numberOfPage = Math.ceil(this.paginatedItemsFilter.length/this.pagination.itemPerPage);
 				this.pagination.items = [];
 				for( let i = 0; i < numberOfPage; i++ ){
 					this.pagination.items.push(i+1);
 				}
-				//console.log('this.pagination.items = ', this.pagination.items)
 			},
 			selectPage(item){
 				this.pagination.currentPage = item;
@@ -275,10 +255,9 @@
 					this.pagination.filteredItems.push(i);
 				}
 				
-				this.paginatedItems = this.filteredItems.filter((v, k) => {
-					return Math.ceil((k+1) / this.pagination.itemPerPage) == this.pagination.currentPage;
+				this.paginatedItems = this.paginatedItemsFilter.filter((v, k) => {
+					return Math.ceil((k+1) / this.pagination.itemPerPage) == this.pagination.currentPage
 				});
-				//console.log('this.pagination.items = ', this.pagination.items)
 			},
 
 			addContactItem(){
@@ -397,15 +376,26 @@
 
 		},
 		watch: {
-			filteredItems: function (val, old) {
-				/*console.log('filteredItems', this.filteredItems);
-				console.log('contacts', this.contacts);*/
+			paginatedItemsFilter: function (val, old) {
 				this.buildPagination();
 				this.selectPage(this.pagination.currentPage);
 			},
 			deep: true
 		},
 		computed: {
+			paginatedItemsFilter() {
+				return this.filteredItems.filter((item) => {
+					if( item.name.toLowerCase().match(this.searchString.toLowerCase()) || 
+						item.email.toLowerCase().match(this.searchString.toLowerCase()) || 
+						item.phone.toLowerCase().match(this.searchString.toLowerCase()) || 
+						item.age.toLowerCase().match(this.searchString.toLowerCase()) || 
+						item.role.toLowerCase().match(this.searchString.toLowerCase()) || 
+						item.joiningDate.toLowerCase().match(this.searchString.toLowerCase()) || 
+						item.salery.toLowerCase().match(this.searchString.toLowerCase())){
+						return item;
+					}
+				});
+			},
 			...mapGetters('filteredItems', {
 				filteredItems: 'filteredItems'
 			}),

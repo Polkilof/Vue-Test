@@ -205,11 +205,11 @@
 					'progress-bar-info',
 					'progress-bar-inverse'
 				],
-				progressbarColor: null,
+				progressbarColor: '',
 			}
 		},
 		created(){
-			this.$store.dispatch('contacts/loadContacts');
+			//this.$store.dispatch('contacts/loadContacts');
 		},
 		methods: {
 			imageIndexOf(){
